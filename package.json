@@ -1,0 +1,40 @@
+{
+  "name": "@razrlab/teltonika",
+  "version": "0.1.0",
+  "description": "Teltonika codec parser",
+  "main": "index.js",
+  "files": [
+    "lib"
+  ],
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "dependencies": {
+    "binary-parser": "^1.5.0",
+    "crc": "^3.8.0"
+  },
+  "devDependencies": {
+    "jsdom": "^16.2.2",
+    "pre-commit": "^1.2.2",
+    "request": "^2.88.2",
+    "request-promise-native": "^1.0.8"
+  },
+  "scripts": {
+    "test": "node test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/razrlab/teltonika.git"
+  },
+  "keywords": [
+    "teltonika"
+  ],
+  "author": "Mohamed Akram",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/razrlab/teltonika/issues"
+  },
+  "homepage": "https://github.com/razrlab/teltonika#readme",
+  "private": true
+}
