@@ -11,7 +11,7 @@
     "test": "test"
   },
   "dependencies": {
-    "binary-parser": "^1.5.0",
+    "binary-parser": "^1.7.0",
     "crc": "^3.8.0"
   },
   "devDependencies": {
