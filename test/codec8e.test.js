@@ -1,4 +1,4 @@
-const assert = require("assert");
+/** @typedef {import("zora").SpecFunction} SpecFunction */
 
 const { codec } = require("..");
 
@@ -6,7 +6,8 @@ function print(obj) {
   console.log(JSON.stringify(obj, null, 2));
 }
 
-function test1() {
+/** @type {SpecFunction} */
+function test1(t) {
   // https://wiki.teltonika-gps.com/view/Codec#Codec_8_Extended
   const hex =
     "000000000000004A8E010000016B412CEE000100000000000000000000000000000000010005000100010100010011001D00010010015E2C880002000B000000003544C87A000E000000001DD7E06A00000100002994";
@@ -59,10 +60,7 @@ function test1() {
     count2: 1,
     crc16: 10644,
   };
-  // TODO - use deepStrictEqual
-  // https://github.com/keichi/binary-parser/issues/138
-  assert.deepEqual(actual, expected);
+  t.deepEqual(actual, expected, "codec 8e is parsed correctly");
 }
 
-test1();
-console.log("finished codec8e tests");
+module.exports = test1;

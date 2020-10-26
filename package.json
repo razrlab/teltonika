@@ -17,11 +17,12 @@
   "devDependencies": {
     "jsdom": "^16.2.2",
     "pre-commit": "^1.2.2",
+    "pta": "^0.1.3",
     "request": "^2.88.2",
     "request-promise-native": "^1.0.8"
   },
   "scripts": {
-    "test": "node test"
+    "test": "pta"
   },
   "repository": {
     "type": "git",

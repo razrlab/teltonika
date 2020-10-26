@@ -1,4 +1,4 @@
-const assert = require("assert");
+/** @typedef {import("zora").SpecFunction} SpecFunction */
 
 const { codec } = require("..");
 
@@ -6,7 +6,8 @@ function print(obj) {
   console.log(JSON.stringify(obj, null, 2));
 }
 
-function test1() {
+/** @type {SpecFunction} */
+function test1(t) {
   // https://wiki.teltonika-gps.com/view/Codec#Codec_8
   const hex =
     "000000000000003608010000016B40D8EA30010000000000000000000000000000000105021503010101425E0F01F10000601A014E0000000000000000010000C7CF";
@@ -59,12 +60,11 @@ function test1() {
     count2: 1,
     crc16: 51151,
   };
-  // TODO - use deepStrictEqual
-  // https://github.com/keichi/binary-parser/issues/138
-  assert.deepEqual(actual, expected);
+  t.deepEqual(actual, expected, "codec 8 is parsed correctly");
 }
 
-function test2() {
+/** @type {SpecFunction} */
+function test2(t) {
   // https://wiki.teltonika-gps.com/view/Codec#Codec_8
   const hex =
     "000000000000002808010000016B40D9AD80010000000000000000000000000000000103021503010101425E100000010000F22A";
@@ -109,12 +109,11 @@ function test2() {
     count2: 1,
     crc16: 61994,
   };
-  // TODO - use deepStrictEqual
-  // https://github.com/keichi/binary-parser/issues/138
-  assert.deepEqual(actual, expected);
+  t.deepEqual(actual, expected, "codec 8 is parsed correctly");
 }
 
-function test3() {
+/** @type {SpecFunction} */
+function test3(t) {
   // https://wiki.teltonika-gps.com/view/Codec#Codec_8
   const hex =
     "000000000000004308020000016B40D57B480100000000000000000000000000000001010101000000000000016B40D5C198010000000000000000000000000000000101010101000000020000252C";
@@ -173,13 +172,11 @@ function test3() {
     count2: 2,
     crc16: 9516,
   };
-  // TODO - use deepStrictEqual
-  // https://github.com/keichi/binary-parser/issues/138
-  assert.deepEqual(actual, expected);
+  t.deepEqual(actual, expected, "codec 8 is parsed correctly");
 }
 
-test1();
-test2();
-test3();
-
-console.log("finished codec8 tests");
+module.exports = (t) => {
+  test1(t);
+  test2(t);
+  test3(t);
+};
