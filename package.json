@@ -11,13 +11,13 @@
     "test": "test"
   },
   "dependencies": {
-    "binary-parser": "^1.7.0",
+    "binary-parser": "^1.9.1",
     "crc": "^3.8.0"
   },
   "devDependencies": {
-    "jsdom": "^16.4.0",
+    "jsdom": "^16.6.0",
     "pre-commit": "^1.2.2",
-    "pta": "^0.2.1",
+    "pta": "^0.2.3",
     "request": "^2.88.2",
     "request-promise-native": "^1.0.8"
   },
