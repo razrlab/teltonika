@@ -17,8 +17,8 @@ function testElement(element) {
     name,
     bytes,
     type,
-    minValue,
-    maxValue,
+    min,
+    max,
     multiplier,
     unit,
     values,
@@ -35,8 +35,8 @@ function testElement(element) {
       type.toLowerCase() == type) ||
       type === null
   );
-  ok(Number.isInteger(minValue) || minValue === null);
-  ok(Number.isInteger(maxValue) || maxValue === null);
+  ok(Number.isInteger(min) || min === null);
+  ok(Number.isInteger(max) || max === null);
   ok(Number.isFinite(multiplier));
   ok((typeof unit == "string" && unit.trim().length) || unit === null);
   ok(
@@ -79,8 +79,8 @@ async function main() {
         data[3] == "-"
           ? null
           : data[3].toLowerCase().replace("long int", "").trim();
-      const minValue = data[4] == "-" ? null : Number(data[4]);
-      const maxValue = data[5] == "-" ? null : Number(data[5]);
+      const min = data[4] == "-" ? null : Number(data[4]);
+      const max = data[5] == "-" ? null : Number(data[5]);
       const multiplier = Number(data[6]) || 1;
       const unit = data[7] == "-" || !data[7].trim() ? null : data[7];
       let isSwappedValue = null;
@@ -121,8 +121,8 @@ async function main() {
         name,
         bytes,
         type,
-        minValue,
-        maxValue,
+        min,
+        max,
         multiplier,
         unit,
         values,
