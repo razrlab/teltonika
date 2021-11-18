@@ -11,15 +11,14 @@
     "test": "test"
   },
   "dependencies": {
-    "binary-parser": "^1.9.1",
+    "binary-parser": "^2.0.1",
     "crc": "^3.8.0"
   },
   "devDependencies": {
-    "jsdom": "^16.6.0",
+    "jsdom": "^18.1.0",
+    "node-fetch": "^2.6.6",
     "pre-commit": "^1.2.2",
-    "pta": "^0.2.3",
-    "request": "^2.88.2",
-    "request-promise-native": "^1.0.8"
+    "pta": "^0.2.3"
   },
   "scripts": {
     "test": "pta"

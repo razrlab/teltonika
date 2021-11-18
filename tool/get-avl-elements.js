@@ -1,7 +1,7 @@
 const { ok } = require("assert");
 
 const { JSDOM } = require("jsdom");
-const request = require("request-promise-native");
+const fetch = require("node-fetch");
 
 function nameToVar(name) {
   return name
@@ -53,25 +53,33 @@ function testElement(element) {
 }
 
 async function main() {
-  const url = "https://wiki.teltonika-gps.com/view/FMB_AVL_ID";
-  const { document } = new JSDOM(await request.get(url)).window;
+  const url =
+    "https://wiki.teltonika-gps.com/view/Template:Teltonika_Data_Sending_Parameters_ID";
+  const { document } = new JSDOM(await (await fetch(url)).text()).window;
   const elements = {};
   const ids = {};
   for (const table of document.querySelectorAll("table")) {
     for (const row of table.querySelectorAll("tr")) {
       if (row.querySelector("th")) continue;
       const data = Array.from(row.querySelectorAll("td"), (c) =>
-        c.textContent.trim()
+        c.querySelector(".mw-collapsible")
+          ? c.querySelector(".mw-collapsible").textContent.trim()
+          : c.textContent.trim()
       );
       const id = Number(data[0]);
-      const name = data[1];
+      const name = data[1]
+        .replace("Acitivity", "Activity")
+        .replace("Duratation", "Duration");
       ids[nameToVar(name)] = id;
       const bytes = Number(data[2]) || null;
-      const type = data[3] == "-" ? null : data[3].toLowerCase();
+      const type =
+        data[3] == "-"
+          ? null
+          : data[3].toLowerCase().replace("long int", "").trim();
       const minValue = data[4] == "-" ? null : Number(data[4]);
       const maxValue = data[5] == "-" ? null : Number(data[5]);
       const multiplier = Number(data[6]) || 1;
-      const unit = data[7] == "-" ? null : data[7];
+      const unit = data[7] == "-" || !data[7].trim() ? null : data[7];
       let isSwappedValue = null;
       const rangeRegex = /^[0-9]+-[0-9]+$/;
       let values = Object.fromEntries(
