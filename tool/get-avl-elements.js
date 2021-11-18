@@ -23,7 +23,7 @@ function testElement(element) {
     unit,
     values,
     devices,
-    group,
+    groups,
   } = element;
   ok(Number.isInteger(id));
   ok(typeof name == "string" && name.trim().length);
@@ -49,7 +49,10 @@ function testElement(element) {
     )
   );
   ok(Array.isArray(devices) && devices.every((d) => d.length && !/\s/.test(d)));
-  ok(typeof group == "string" && group.trim().length);
+  ok(
+    Array.isArray(groups) &&
+      groups.every((g) => typeof g == "string" && g.trim().length)
+  );
 }
 
 async function main() {
@@ -112,7 +115,7 @@ async function main() {
         .split("\n")
         .map((l) => l.trim())
         .filter((l) => l && !l.includes("[Expand]"));
-      const group = data[10];
+      const groups = data[10].split(",").map((g) => g.trim());
       const element = {
         id,
         name,
@@ -124,7 +127,7 @@ async function main() {
         unit,
         values,
         devices,
-        group,
+        groups,
       };
       testElement(element);
       elements[id] = element;
