@@ -81,7 +81,7 @@ async function main() {
           : data[3].toLowerCase().replace("long int", "").trim();
       const min = data[4] == "-" ? null : Number(data[4]);
       const max = data[5] == "-" ? null : Number(data[5]);
-      const multiplier = Number(data[6]) || 1;
+      const multiplier = parseFloat(data[6]) || 1;
       const unit = data[7] == "-" || !data[7].trim() ? null : data[7];
       let isSwappedValue = null;
       const rangeRegex = /^[0-9]+-[0-9]+$/;
