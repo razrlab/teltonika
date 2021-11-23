@@ -35,8 +35,8 @@ function testElement(element) {
       type.toLowerCase() == type) ||
       type === null
   );
-  ok(Number.isInteger(min) || min === null);
-  ok(Number.isInteger(max) || max === null);
+  ok(Number.isFinite(min) || min === null);
+  ok(Number.isFinite(max) || max === null);
   ok(Number.isFinite(multiplier));
   ok((typeof unit == "string" && unit.trim().length) || unit === null);
   ok(
@@ -57,16 +57,18 @@ function testElement(element) {
 
 async function main() {
   const url =
-    "https://wiki.teltonika-gps.com/view/Template:Teltonika_Data_Sending_Parameters_ID";
+    process.argv[2] == "fmx640"
+      ? "https://wiki.teltonika-gps.com/view/Template:FMX640_AVL_ID"
+      : "https://wiki.teltonika-gps.com/view/Template:Teltonika_Data_Sending_Parameters_ID";
   const { document } = new JSDOM(await (await fetch(url)).text()).window;
   const elements = {};
   const ids = {};
   for (const table of document.querySelectorAll("table")) {
     for (const row of table.querySelectorAll("tr")) {
       if (row.querySelector("th")) continue;
-      const data = Array.from(row.querySelectorAll("td"), (c) =>
-        c.querySelector(".mw-collapsible")
-          ? c.querySelector(".mw-collapsible").textContent.trim()
+      const data = Array.from(row.querySelectorAll("td"), (c, i) =>
+        c.querySelectorAll("a").length
+          ? Array.from(c.querySelectorAll("a"), (a) => a.textContent).join("\n")
           : c.textContent.trim()
       );
       const id = Number(data[0]);
@@ -80,8 +82,8 @@ async function main() {
           ? null
           : data[3].toLowerCase().replace("long int", "").trim();
       const min = data[4] == "-" ? null : Number(data[4]);
-      const max = data[5] == "-" ? null : Number(data[5]);
-      const multiplier = parseFloat(data[6]) || 1;
+      const max = data[5] == "-" ? null : Number(data[5].replace(",", "."));
+      const multiplier = parseFloat(data[6].replace(",", ".")) || 1;
       const unit = data[7] == "-" || !data[7].trim() ? null : data[7];
       let isSwappedValue = null;
       const rangeRegex = /^[0-9]+-[0-9]+$/;
