@@ -18,7 +18,7 @@ function test1(t) {
     commandQuantity1: 1,
     type: 5,
     commandSize: 11,
-    timestamp: 176276256,
+    timestamp: new Date(176276256 * 1000),
     command: "getinfo",
     commandQuantity2: 1,
     crc16: 60827,

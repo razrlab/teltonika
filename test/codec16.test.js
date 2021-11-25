@@ -19,7 +19,7 @@ function test1(t) {
     count: 2,
     data: [
       {
-        timestamp: 1562760414000,
+        timestamp: new Date(1562760414000),
         priority: 0,
         gps: {
           longitude: 0,
@@ -54,7 +54,7 @@ function test1(t) {
         },
       },
       {
-        timestamp: 1562760415000,
+        timestamp: new Date(1562760415000),
         priority: 0,
         gps: {
           longitude: 0,
