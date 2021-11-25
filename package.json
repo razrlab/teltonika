@@ -22,7 +22,7 @@
   },
   "scripts": {
     "test": "pta",
-    "avl": "node tool/avl > lib/avl/general.js && node tool/avl fmx640 > lib/avl/fmx640.js"
+    "avl": "node tool/avl general > lib/avl/general.js && node tool/avl fmx640 > lib/avl/fmx640.js"
   },
   "repository": {
     "type": "git",

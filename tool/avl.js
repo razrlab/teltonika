@@ -1,4 +1,4 @@
-const { ok } = require("assert");
+const { deepEqual, equal, ok } = require("assert/strict");
 
 const { JSDOM } = require("jsdom");
 const fetch = require("node-fetch");
@@ -55,11 +55,37 @@ function testElement(element) {
   );
 }
 
+const prefixes = {
+  Freezer: "Freezer",
+  "Manual CAN": "Manual CAN",
+  CAN: "CAN",
+};
+
+const nameFixes = {
+  84: { "Fuel level": "Fuel Level Liters" },
+  89: { "Fuel level": "Fuel Level Percent" },
+  111: { "AdBlue Level": "AdBlue Level Percent" },
+  112: { "AdBlue Level": "AdBlue Level Liters" },
+  139: { "Driver 1 Driving Time": "Driver 1 Continuous Driving Time" },
+  140: { "Driver 2 Driving Time": "Driver 2 Continuous Driving Time" },
+  143: { "Driver 1 Acitivity Duratation": "Driver 1 Activity Duration" },
+  144: { "Driver 2 Acitivity Duratation": "Driver 2 Activity Duration" },
+  145: { "Driver 1 Driving Time": "Driver 1 Cumulative Driving Time" },
+  146: { "Driver 2 Driving Time": "Driver 2 Cumulative Driving Time" },
+  408: { "Driver Card Issue Year": "Driver Card Issue Year Long" },
+  10354: { RPM: "RPM Percent" },
+};
+
+const urls = {
+  general:
+    "https://wiki.teltonika-gps.com/view/Template:Teltonika_Data_Sending_Parameters_ID",
+  fmx640: "https://wiki.teltonika-gps.com/view/Template:FMX640_AVL_ID",
+};
+
 async function main() {
-  const url =
-    process.argv[2] == "fmx640"
-      ? "https://wiki.teltonika-gps.com/view/Template:FMX640_AVL_ID"
-      : "https://wiki.teltonika-gps.com/view/Template:Teltonika_Data_Sending_Parameters_ID";
+  const series = process.argv[2];
+  const url = urls[series];
+  if (!url) throw new Error(`Unknown series ${series}`);
   const { document } = new JSDOM(await (await fetch(url)).text()).window;
   const elements = {};
   const ids = {};
@@ -72,10 +98,7 @@ async function main() {
           : c.textContent.trim()
       );
       const id = Number(data[0]);
-      const name = data[1]
-        .replace("Acitivity", "Activity")
-        .replace("Duratation", "Duration");
-      ids[nameToVar(name)] = id;
+      let name = nameFixes[id]?.[data[1]] || data[1];
       const bytes = Number(data[2]) || null;
       const type =
         data[3] == "-"
@@ -116,8 +139,15 @@ async function main() {
       const devices = data[9]
         .split("\n")
         .map((l) => l.trim())
-        .filter((l) => l && !l.includes("[Expand]"));
-      const groups = data[10].split(",").map((g) => g.trim());
+        .filter(Boolean)
+        .sort();
+      const groups = data[10]
+        .split(",")
+        .map((g) => g.trim())
+        .sort();
+      const group = Object.keys(prefixes).find((g) => groups[0].includes(g));
+      if (group && !name.startsWith(prefixes[group]))
+        name = `${prefixes[group]} ${name}`;
       const element = {
         id,
         name,
@@ -132,6 +162,32 @@ async function main() {
         groups,
       };
       testElement(element);
+      const nameId = nameToVar(name);
+      if (nameId in ids) {
+        equal(id, ids[nameId]);
+      }
+      ids[nameId] = id;
+      if (id in elements) {
+        const existing = elements[id];
+        let name, devices, groups, a, b;
+        ({ name, devices, groups, ...a } = element);
+        ({ name, devices, groups, ...b } = existing);
+        try {
+          deepEqual(a, b);
+        } catch (err) {
+          if (id == 527 && name == "CAN DTC Value") elements[id] = element;
+          else throw err;
+        }
+        if (element.name != existing.name)
+          elements[id].name = `${element.name} / ${existing.name}`;
+        elements[id].devices = Array.from(
+          new Set([...element.devices, ...existing.devices])
+        ).sort();
+        elements[id].groups = Array.from(
+          new Set([...element.groups, ...existing.groups])
+        ).sort();
+        continue;
+      }
       elements[id] = element;
     }
   }
