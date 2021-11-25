@@ -110,7 +110,7 @@ async function main() {
       const unit = data[7] == "-" || !data[7].trim() ? null : data[7];
       let isSwappedValue = null;
       const rangeRegex = /^[0-9]+-[0-9]+$/;
-      let values = Object.fromEntries(
+      const values = Object.fromEntries(
         data[8]
           .split("\n")
           .map((l) => {
@@ -118,8 +118,8 @@ async function main() {
             if (parts.length != 2) return;
             if (isSwappedValue == null)
               isSwappedValue = /^[0-9]+$/.test(parts[1]);
-            let numberIdx = isSwappedValue ? 1 : 0;
-            let labelIdx = isSwappedValue ? 0 : 1;
+            const numberIdx = isSwappedValue ? 1 : 0;
+            const labelIdx = isSwappedValue ? 0 : 1;
             const isRange = rangeRegex.test(parts[numberIdx]);
             if (isRange) return [parts[numberIdx], parts[labelIdx]];
             const number = parseInt(parts[numberIdx].replace(/^if /, ""));
@@ -168,25 +168,22 @@ async function main() {
       }
       ids[nameId] = id;
       if (id in elements) {
-        const existing = elements[id];
         let name, devices, groups, a, b;
         ({ name, devices, groups, ...a } = element);
-        ({ name, devices, groups, ...b } = existing);
+        ({ name, devices, groups, ...b } = elements[id]);
         try {
           deepEqual(a, b);
         } catch (err) {
-          if (id == 527 && name == "CAN DTC Value") elements[id] = element;
-          else throw err;
+          if (!(id == 527 && name == "CAN DTC Value")) throw err;
         }
-        if (element.name != existing.name)
-          elements[id].name = `${element.name} / ${existing.name}`;
-        elements[id].devices = Array.from(
-          new Set([...element.devices, ...existing.devices])
+        if (element.name != elements[id].name)
+          element.name = `${element.name} / ${elements[id].name}`;
+        element.devices = Array.from(
+          new Set([...element.devices, ...elements[id].devices])
         ).sort();
-        elements[id].groups = Array.from(
-          new Set([...element.groups, ...existing.groups])
+        element.groups = Array.from(
+          new Set([...element.groups, ...elements[id].groups])
         ).sort();
-        continue;
       }
       elements[id] = element;
     }
