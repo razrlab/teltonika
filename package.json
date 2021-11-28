@@ -18,11 +18,12 @@
     "jsdom": "^18.1.1",
     "node-fetch": "^2.6.6",
     "pre-commit": "^1.2.2",
+    "prettier": "^2.5.0",
     "pta": "^0.2.3"
   },
   "scripts": {
     "test": "pta",
-    "avl": "node tool/avl general > lib/avl/general.js && node tool/avl fmx640 > lib/avl/fmx640.js"
+    "avl": "node tool/avl general > lib/avl/general.js && node tool/avl fmx640 > lib/avl/fmx640.js && prettier -w lib/avl/*"
   },
   "repository": {
     "type": "git",
