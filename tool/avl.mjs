@@ -73,6 +73,8 @@ const nameFixes = {
   145: { "Driver 1 Driving Time": "Driver 1 Cumulative Driving Time" },
   146: { "Driver 2 Driving Time": "Driver 2 Cumulative Driving Time" },
   408: { "Driver Card Issue Year": "Driver Card Issue Year Long" },
+  857: { "LNG Level": "LNG Level Percent" },
+  858: { "LNG Level": "LNG Level Kg" },
   10354: { RPM: "RPM Percent" },
 };
 
