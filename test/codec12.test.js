@@ -1,4 +1,6 @@
-/** @typedef {import("zora").SpecFunction} SpecFunction */
+/** @typedef {import("zora").ISpecFunction} ISpecFunction */
+
+const { test } = require("zora");
 
 const { codec } = require("..");
 
@@ -6,7 +8,7 @@ function print(obj) {
   console.log(JSON.stringify(obj, null, 2));
 }
 
-/** @type {SpecFunction} */
+/** @type {ISpecFunction} */
 function testCommand(t) {
   // https://wiki.teltonika-gps.com/view/Codec#Codec_12
   const hex = "000000000000000D0C010500000005676574696F01000000CB";
@@ -168,10 +170,10 @@ function testOBDInfoResponse(t) {
   );
 }
 
-module.exports = (t) => {
+test("codec12", (t) => {
   testCommand(t);
   testGetIOResponse(t);
   testGetInfoResponse(t);
   testGetStatusResponse(t);
   testOBDInfoResponse(t);
-};
+});

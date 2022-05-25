@@ -1,4 +1,6 @@
-/** @typedef {import("zora").SpecFunction} SpecFunction */
+/** @typedef {import("zora").ISpecFunction} ISpecFunction */
+
+const { test } = require("zora");
 
 const { codec } = require("..");
 
@@ -6,7 +8,7 @@ function print(obj) {
   console.log(JSON.stringify(obj, null, 2));
 }
 
-/** @type {SpecFunction} */
+/** @type {ISpecFunction} */
 function test1(t) {
   // https://wiki.teltonika-gps.com/view/Codec#Codec_13
   const hex = "00000000000000130D01050000000B0A81C320676574696E666F010000ED9B";
@@ -26,4 +28,4 @@ function test1(t) {
   t.deepEqual(actual, expected, "codec 13 is parsed correctly");
 }
 
-module.exports = test1;
+test("codec13", test1);

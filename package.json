@@ -11,19 +11,19 @@
     "test": "test"
   },
   "dependencies": {
-    "binary-parser": "^2.0.2",
-    "crc": "^3.8.0"
+    "binary-parser": "^2.0.3",
+    "crc": "^4.1.1"
   },
   "devDependencies": {
-    "jsdom": "^18.1.1",
-    "node-fetch": "^2.6.6",
+    "jsdom": "^19.0.0",
+    "node-fetch": "^3.2.4",
     "pre-commit": "^1.2.2",
-    "prettier": "^2.5.0",
-    "pta": "^0.2.3"
+    "prettier": "^2.6.2",
+    "pta": "^1.0.2"
   },
   "scripts": {
     "test": "pta",
-    "avl": "node tool/avl general > lib/avl/general.js && node tool/avl fmx640 > lib/avl/fmx640.js && prettier -w lib/avl/*"
+    "avl": "node tool/avl.mjs general > lib/avl/general.js && node tool/avl.mjs fmx640 > lib/avl/fmx640.js && prettier -w lib/avl/*"
   },
   "repository": {
     "type": "git",

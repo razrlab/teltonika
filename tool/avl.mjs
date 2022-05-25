@@ -1,7 +1,7 @@
-const { deepEqual, equal, ok } = require("assert/strict");
+import { deepEqual, equal, ok } from "assert/strict";
 
-const { JSDOM } = require("jsdom");
-const fetch = require("node-fetch");
+import { JSDOM } from "jsdom";
+import fetch from "node-fetch";
 
 function nameToVar(name) {
   return name
