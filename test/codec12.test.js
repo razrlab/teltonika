@@ -170,10 +170,38 @@ function testOBDInfoResponse(t) {
   );
 }
 
+function testNewValueResponse(t) {
+  const hex =
+    "00000000000000400c0106000000384e65772076616c75652033303030303a383045333332464546333446303232363b33303030313a334132383234463341363738353238423b01000049b5";
+  const actual = codec.decode(Buffer.from(hex, "hex"));
+  const expected = {
+    preamble: 0,
+    dataFieldLength: 64,
+    codecId: 12,
+    quantity1: 1,
+    type: 6,
+    size: 56,
+    response: [
+      {
+        id: "New value",
+        value: "30000:80E332FEF34F0226;30001:3A2824F3A678528B;",
+      },
+    ],
+    quantity2: 1,
+    crc16: 18869,
+  };
+  t.deepEqual(
+    actual,
+    expected,
+    "codec 12 new value response is parsed correctly"
+  );
+}
+
 test("codec12", (t) => {
   testCommand(t);
   testGetIOResponse(t);
   testGetInfoResponse(t);
   testGetStatusResponse(t);
   testOBDInfoResponse(t);
+  testNewValueResponse(t);
 });
