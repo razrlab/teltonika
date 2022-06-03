@@ -27,6 +27,7 @@ function testCommand(t) {
   t.deepEqual(actual, expected, "codec 12 command is parsed correctly");
 }
 
+/** @type {ISpecFunction} */
 function testGetIOResponse(t) {
   // https://wiki.teltonika-gps.com/view/FMB_getio
   const hex =
@@ -54,6 +55,7 @@ function testGetIOResponse(t) {
   t.deepEqual(actual, expected, "codec 12 getio response is parsed correctly");
 }
 
+/** @type {ISpecFunction} */
 function testGetInfoResponse(t) {
   // https://wiki.teltonika-gps.com/view/FMB_getinfo
   const hex =
@@ -95,6 +97,7 @@ function testGetInfoResponse(t) {
   );
 }
 
+/** @type {ISpecFunction} */
 function testGetStatusResponse(t) {
   // https://wiki.teltonika-gps.com/view/FMB_getstatus
   const hex =
@@ -132,6 +135,7 @@ function testGetStatusResponse(t) {
   );
 }
 
+/** @type {ISpecFunction} */
 function testOBDInfoResponse(t) {
   // https://wiki.teltonika-gps.com/view/FMB_obdinfo
   const hex =
@@ -170,6 +174,7 @@ function testOBDInfoResponse(t) {
   );
 }
 
+/** @type {ISpecFunction} */
 function testNewValueResponse(t) {
   const hex =
     "00000000000000400c0106000000384e65772076616c75652033303030303a383045333332464546333446303232363b33303030313a334132383234463341363738353238423b01000049b5";
