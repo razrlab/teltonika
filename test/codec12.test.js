@@ -2,7 +2,7 @@
 
 const { test } = require("zora");
 
-const { codec } = require("..");
+const { codec, codec12 } = require("..");
 
 function print(obj) {
   console.log(JSON.stringify(obj, null, 2));
@@ -202,6 +202,26 @@ function testNewValueResponse(t) {
   );
 }
 
+/** @type {ISpecFunction} */
+function testEncodeCommand(t) {
+  const command = "setparam 30000:80e332fef34f0226;30001:3a2824f3a678528b";
+  const encoded = Buffer.from(codec12.encodeCommand(command));
+  const hex =
+    "000000000000003e0c010500000036736574706172616d2033303030303a383065333332666566333466303232363b33303030313a336132383234663361363738353238620100004411";
+  t.deepEqual(encoded.toString("hex"), hex);
+  t.deepEqual(codec.decode(encoded), {
+    codecId: 12,
+    command: "setparam 30000:80e332fef34f0226;30001:3a2824f3a678528b",
+    crc16: 17425,
+    dataFieldLength: 62,
+    preamble: 0,
+    quantity1: 1,
+    quantity2: 1,
+    size: 54,
+    type: 5,
+  });
+}
+
 test("codec12", (t) => {
   testCommand(t);
   testGetIOResponse(t);
@@ -209,4 +229,5 @@ test("codec12", (t) => {
   testGetStatusResponse(t);
   testOBDInfoResponse(t);
   testNewValueResponse(t);
+  testEncodeCommand(t);
 });
