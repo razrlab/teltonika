@@ -203,6 +203,34 @@ function testNewValueResponse(t) {
 }
 
 /** @type {ISpecFunction} */
+function testWarningResponse(t) {
+  const hex =
+    "00000000000000390c0106000000315741524e494e473a204e6f7420737570706f7274656420506172616d204944206f722056616c75652064657465637465640100008f01";
+  const actual = codec.decode(Buffer.from(hex, "hex"));
+  const expected = {
+    codecId: 12,
+    crc16: 36609,
+    dataFieldLength: 57,
+    preamble: 0,
+    quantity1: 1,
+    quantity2: 1,
+    response: [
+      {
+        id: "WARNING",
+        value: "Not supported Param ID or Value detected",
+      },
+    ],
+    size: 49,
+    type: 6,
+  };
+  t.deepEqual(
+    actual,
+    expected,
+    "codec 12 warning response is parsed correctly"
+  );
+}
+
+/** @type {ISpecFunction} */
 function testEncodeCommand(t) {
   const command = "setparam 30000:80e332fef34f0226;30001:3a2824f3a678528b";
   const encoded = Buffer.from(codec12.encodeCommand(command));
@@ -229,5 +257,6 @@ test("codec12", (t) => {
   testGetStatusResponse(t);
   testOBDInfoResponse(t);
   testNewValueResponse(t);
+  testWarningResponse(t);
   testEncodeCommand(t);
 });
