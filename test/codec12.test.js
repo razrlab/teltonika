@@ -175,6 +175,39 @@ function testOBDInfoResponse(t) {
 }
 
 /** @type {ISpecFunction} */
+function testFWStatsResponse(t) {
+  const hex =
+    "00000000000000890c010600000081302e302e305f302d3e332e32352e31355f312028323032302f322f352031393a353929205253543a3420323030342f312f3120303a303d312c3235353b20323032302f332f32392031333a31363d312c3235353b20323032302f332f32392031333a31363d312c3235353b20323032302f332f32392031313a383d312c3235353b0100008fbe";
+  const actual = codec.decode(Buffer.from(hex, "hex"));
+  const expected = {
+    codecId: 12,
+    crc16: 36798,
+    dataFieldLength: 137,
+    preamble: 0,
+    quantity1: 1,
+    quantity2: 1,
+    response: [
+      {
+        id: "",
+        value: "0.0.0_0->3.25.15_1 (2020/2/5 19:59)",
+      },
+      {
+        id: "RST",
+        value:
+          "4 2004/1/1 0:0=1,255; 2020/3/29 13:16=1,255; 2020/3/29 13:16=1,255; 2020/3/29 11:8=1,255;",
+      },
+    ],
+    size: 129,
+    type: 6,
+  };
+  t.deepEqual(
+    actual,
+    expected,
+    "codec 12 fwstats response is parsed correctly"
+  );
+}
+
+/** @type {ISpecFunction} */
 function testNewValueResponse(t) {
   const hex =
     "00000000000000400c0106000000384e65772076616c75652033303030303a383045333332464546333446303232363b33303030313a334132383234463341363738353238423b01000049b5";
@@ -278,6 +311,7 @@ test("codec12", (t) => {
   testGetInfoResponse(t);
   testGetStatusResponse(t);
   testOBDInfoResponse(t);
+  testFWStatsResponse(t);
   testNewValueResponse(t);
   testParamResponse(t);
   testWarningResponse(t);
