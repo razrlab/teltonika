@@ -23,7 +23,8 @@
   },
   "scripts": {
     "test": "pta",
-    "avl": "node tool/avl.mjs general > lib/avl/general.js && node tool/avl.mjs fmx640 > lib/avl/fmx640.js && prettier -w lib/avl/*"
+    "avl": "node tool/avl.mjs general > lib/avl/general.js && node tool/avl.mjs fmx640 > lib/avl/fmx640.js && prettier -w lib/avl/*",
+    "param": "node tool/param.mjs > lib/param/fmb.js && node tool/param.mjs && prettier -w lib/param/*"
   },
   "repository": {
     "type": "git",
