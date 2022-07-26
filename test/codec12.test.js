@@ -203,6 +203,28 @@ function testNewValueResponse(t) {
 }
 
 /** @type {ISpecFunction} */
+function testParamResponse(t) {
+  const hex =
+    "000000000000001f0c010600000017506172616d2049443a323030312056616c75653a7761700100003548";
+  const actual = codec.decode(Buffer.from(hex, "hex"));
+  const expected = {
+    preamble: 0,
+    dataFieldLength: 31,
+    codecId: 12,
+    quantity1: 1,
+    type: 6,
+    size: 23,
+    response: [
+      { id: "Param ID", value: 2001 },
+      { id: "Value", value: "wap" },
+    ],
+    quantity2: 1,
+    crc16: 13640,
+  };
+  t.deepEqual(actual, expected, "codec 12 param response is parsed correctly");
+}
+
+/** @type {ISpecFunction} */
 function testWarningResponse(t) {
   const hex =
     "00000000000000390c0106000000315741524e494e473a204e6f7420737570706f7274656420506172616d204944206f722056616c75652064657465637465640100008f01";
@@ -257,6 +279,7 @@ test("codec12", (t) => {
   testGetStatusResponse(t);
   testOBDInfoResponse(t);
   testNewValueResponse(t);
+  testParamResponse(t);
   testWarningResponse(t);
   testEncodeCommand(t);
 });
