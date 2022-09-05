@@ -208,6 +208,42 @@ function testFWStatsResponse(t) {
 }
 
 /** @type {ISpecFunction} */
+function testSetDigOutResponse(t) {
+  const hex =
+    "00000000000000510c010600000049444f555453206172652073657420746f3a203030313020544d4f73206172653a20302030203020302e20444f5554207363656e6172696f7320636f6e666967757265643a2030303030010000b79f";
+  const actual = codec.decode(Buffer.from(hex, "hex"));
+  const expected = {
+    preamble: 0,
+    dataFieldLength: 81,
+    codecId: 12,
+    quantity1: 1,
+    type: 6,
+    size: 73,
+    response: [
+      {
+        id: "DOUTS are set to",
+        value: "0010",
+      },
+      {
+        id: "TMOs are",
+        value: "0 0 0 0.",
+      },
+      {
+        id: "DOUT scenarios configured",
+        value: "0000",
+      },
+    ],
+    quantity2: 1,
+    crc16: 47007,
+  };
+  t.deepEqual(
+    actual,
+    expected,
+    "codec 12 setdigout response is parsed correctly"
+  );
+}
+
+/** @type {ISpecFunction} */
 function testNewValueResponse(t) {
   const hex =
     "00000000000000400c0106000000384e65772076616c75652033303030303a383045333332464546333446303232363b33303030313a334132383234463341363738353238423b01000049b5";
@@ -312,6 +348,7 @@ test("codec12", (t) => {
   testGetStatusResponse(t);
   testOBDInfoResponse(t);
   testFWStatsResponse(t);
+  testSetDigOutResponse(t);
   testNewValueResponse(t);
   testParamResponse(t);
   testWarningResponse(t);
